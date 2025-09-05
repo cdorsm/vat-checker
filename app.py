@@ -5,33 +5,24 @@ import yaml
 import pandas as pd
 from passlib.context import CryptContext
 from vat_utils import check_vat
+import io
+from datetime import datetime
+import pytz
 from PIL import Image
-
-# Streamlit page logo and color setup
-
-st.set_page_config(
-    page_title="EU VAT Batch Checker (VIES)",
-    page_icon=Image.open(".streamlit/TaylorMade-Logo.jpg")  # relative path from your repo root
-)
-
-st.sidebar.image(".streamlit/TaylorMade-Logo.jpg", use_column_width=True)
-
-col1, col2 = st.columns([1, 4])
-with col1:
-    st.image(".streamlit/TaylorMade-Logo.jpg", width=80)
-with col2:
-    st.title("EU VAT Batch Checker (VIES)")
+from tempfile import NamedTemporaryFile
+import os
 
 # Configuration
-CRED_FILE = "credentials.yaml"
-COST_PER_CHECK = 1.0  #  per VAT check line
-INITIAL_CREDIT = 10.0  #  initial credit for new users
+BASE_DIR = os.path.dirname(__file__)
+CRED_FILE = os.path.join(BASE_DIR, "data", "credentials.yaml")
+COST_PER_CHECK = 0.05  # € per VAT check line
+INITIAL_CREDIT = 10.0  # € initial credit for new users
+cet = pytz.timezone('Europe/Paris')  # CET/CEST depending on daylight saving
 
 # Password hashing setup
 pwd_ctx = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 # Load and save credentials
-
 def load_credentials():
     try:
         with open(CRED_FILE, 'r') as f:
@@ -49,7 +40,6 @@ def save_credentials(data):
         yaml.safe_dump(data, f)
 
 # Registration and authentication helpers
-
 def register_user(users, creds):
     st.subheader('Create a new account')
     u = st.text_input('Username', key='reg_user')
@@ -87,7 +77,7 @@ users = creds['credentials']['users']
 
 # Login / Register UI
 if not st.session_state['logged_in']:
-    mode = st.sidebar.radio('Account', ['Login', 'Register'])
+    mode = st.sidebar.radio('Account', ['Login']) # Add 'Register' here to readd the register page. 
     if mode == 'Register':
         register_user(users, creds)
     else:
@@ -104,6 +94,23 @@ if not st.session_state['logged_in']:
                 st.sidebar.error('Invalid credentials.')
 
 # Main VAT Checker UI
+
+# Streamlit page logo and color setup
+
+st.set_page_config(
+    page_title="EU VAT Batch Checker (VIES)",
+    page_icon=Image.open(".streamlit/TaylorMade-Logo.jpg")  # relative path from your repo root
+)
+
+st.sidebar.image(".streamlit/TaylorMade-Logo.jpg", use_column_width=True)
+
+col1, col2 = st.columns([1, 4])
+with col1:
+    st.image(".streamlit/TaylorMade-Logo.jpg", width=80)
+with col2:
+    st.title("EU VAT Batch Checker (VIES)")
+
+
 def main_app():
     user = st.session_state['username']
     sidebar = st.sidebar
