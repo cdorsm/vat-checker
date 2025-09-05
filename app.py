@@ -102,7 +102,7 @@ st.set_page_config(
     page_icon=Image.open(".streamlit/TaylorMade-Logo.jpg")  # relative path from your repo root
 )
 
-st.sidebar.image(".streamlit/TaylorMade-Logo.jpg", use_column_width=True)
+st.sidebar.image(".streamlit/TaylorMade-Logo.jpg", use_container_width=True)
 
 col1, col2 = st.columns([1, 4])
 with col1:
