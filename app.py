@@ -5,11 +5,27 @@ import yaml
 import pandas as pd
 from passlib.context import CryptContext
 from vat_utils import check_vat
+from PIL import Image
+
+# Streamlit page logo and color setup
+
+st.set_page_config(
+    page_title="EU VAT Batch Checker (VIES)",
+    page_icon=Image.open(".streamlit/TaylorMade-Logo.jpg")  # relative path from your repo root
+)
+
+st.sidebar.image(".streamlit/TaylorMade-Logo.jpg", use_column_width=True)
+
+col1, col2 = st.columns([1, 4])
+with col1:
+    st.image(".streamlit/TaylorMade-Logo.jpg", width=80)
+with col2:
+    st.title("EU VAT Batch Checker (VIES)")
 
 # Configuration
 CRED_FILE = "credentials.yaml"
-COST_PER_CHECK = 1.0  # € per VAT check line
-INITIAL_CREDIT = 10.0  # € initial credit for new users
+COST_PER_CHECK = 1.0  #  per VAT check line
+INITIAL_CREDIT = 10.0  #  initial credit for new users
 
 # Password hashing setup
 pwd_ctx = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
@@ -141,7 +157,7 @@ def main_app():
         users[user]['credit'] = new_credit
         creds['credentials']['users'] = users
         save_credentials(creds)
-        credit_slot.write(f"**Credit:** €{new_credit:.2f}")
+        credit_slot.write(f"**Credit:** {new_credit:.2f}")
         if skipped:
             st.warning(f"Only {len(to_process)} of {len(vat_list)} processed due to credit.")
 
