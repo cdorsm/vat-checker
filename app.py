@@ -8,7 +8,7 @@ from vat_utils import check_vat
 
 # Configuration
 CRED_FILE = "credentials.yaml"
-COST_PER_CHECK = 0.05  # € per VAT check line
+COST_PER_CHECK = 1.0  # € per VAT check line
 INITIAL_CREDIT = 10.0  # € initial credit for new users
 
 # Password hashing setup
@@ -93,7 +93,7 @@ def main_app():
     sidebar = st.sidebar
     sidebar.write(f"**User:** {users[user]['name']}")
     credit_slot = sidebar.empty()
-    credit_slot.write(f"**Credit:** €{st.session_state['credit']:.2f}")
+    credit_slot.write(f"**Credit:** {st.session_state['credit']:.2f}")
 
     st.title('EU VAT Batch Checker (VIES)')
 
