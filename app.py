@@ -14,7 +14,7 @@ import os
 
 # Configuration
 CRED_FILE = "credentials.yaml"
-COST_PER_CHECK = 0.05  # € per VAT check line
+COST_PER_CHECK = 1.0 # € per VAT check line
 INITIAL_CREDIT = 10.0  # € initial credit for new users
 cet = pytz.timezone('Europe/Paris')  # CET/CEST depending on daylight saving
 
