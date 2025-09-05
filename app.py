@@ -13,8 +13,7 @@ from tempfile import NamedTemporaryFile
 import os
 
 # Configuration
-BASE_DIR = os.path.dirname(__file__)
-CRED_FILE = os.path.join(BASE_DIR, "data", "credentials.yaml")
+CRED_FILE = "credentials.yaml"
 COST_PER_CHECK = 0.05  # € per VAT check line
 INITIAL_CREDIT = 10.0  # € initial credit for new users
 cet = pytz.timezone('Europe/Paris')  # CET/CEST depending on daylight saving
