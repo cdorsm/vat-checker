@@ -19,7 +19,7 @@ INITIAL_CREDIT = 10.0  # € initial credit for new users
 cet = pytz.timezone('Europe/Paris')  # CET/CEST depending on daylight saving
 
 # Password hashing setup
-pwd_ctx = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+pwd_ctx = CryptContext(schemes=["django_pbkdf2_sha256", "pbkdf2_sha256"], deprecated="auto")
 
 # Load and save credentials
 def load_credentials():
