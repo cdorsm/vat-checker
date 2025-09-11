@@ -76,7 +76,7 @@ users = creds['credentials']['users']
 
 # Login / Register UI
 if not st.session_state['logged_in']:
-    mode = st.sidebar.radio('Account', ['Login','Register']) # Add 'Register' here to readd the register page. 
+    mode = st.sidebar.radio('Account', ['Login']) # Add 'Register' here to readd the register page. 
     if mode == 'Register':
         register_user(users, creds)
     else:
